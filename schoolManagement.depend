@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1670771094 source:e:\c++\schoolmanagement\main.cpp
+	<iostream>
+	<vector>
+	<iostream>
+	<fstream>
+	<sstream>
+	<map>
+
