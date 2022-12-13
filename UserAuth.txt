@@ -1,2 +1,1 @@
-abdou abdou@gmail.com 1234 Owner
-ahmed ahmed@gmail.com ahmed Student
+abdou 1234

@@ -216,8 +216,8 @@ public:
         string fpassword;
         while(getline(file, line)){
             stringstream ss(line);
-            ss >> fname >> fgmail >> fpassword;
-            if(name == fname || gmail == fgmail){
+            ss >> fname >> fpassword;
+            if(name == fname){
                 cout << "error, this user already registred" << endl;
                 return;
             }
@@ -225,8 +225,9 @@ public:
         file.close();
 
         outfile.open("UserAuth.txt", ios::out | ios::app);
-        outfile << name << " " << gmail << " " << password << endl;
+        outfile << name << " "<< password << endl;
         ofstream filex;
+
         filex.open("Student.txt");
         string studentName;
         string studentLastName;
@@ -249,16 +250,21 @@ public:
         ifstream file;
         file.open("UserAuth.txt");
         string line;
-        string fgmail;
         string fname;
         string fpassword;
         while(getline(file, line)){
             stringstream ss(line);
-            ss >> fname >> fgmail >> fpassword >> Work;
-            if(name == fname && password == fpassword){
+            ss >> fname >>fpassword;
+            if(name != fname){
+                cout << "this name is not regestered!" << endl;
+            }else{
+                if(password != fpassword){
+                    cout << "error in password or name, please try again!" << endl;
+                }else{
                 cout << "login successful!" << endl;
                 Access = true;
                 return;
+                }
             }
         }
         cout << "error in password or name, please try again!" << endl;
@@ -363,6 +369,8 @@ int main(){
                                 case 1:
                                     {
                                         ofstream file;
+                                        ofstream authfile;
+                                        authfile.open("UserAuth.txt", ios::out | ios::app);
                                         file.open("Student.txt");
                                         string studentName;
                                         string studentLastName;
@@ -380,6 +388,8 @@ int main(){
                                         cout << "group: ";
                                         cin >> group;
                                         file << studentName << " "<<studentLastName<< " "<< to_string(age)<<" "<<gender << " "<< to_string(group) << endl;
+                                        authfile << studentLastName << " " << studentLastName << "@gmail.com" << " " << "123456" << " " << "Student" << endl;
+                                        authfile.close();
                                         file.close();
                                         cout << "the student "<< studentName << " added to group: "<< group;
 
@@ -415,7 +425,6 @@ int main(){
                     {
                         Student student = Student(name, "test", 20, 'M', 2);
                         cout << "welcome " << student.getFname() << endl;
-                        getchar();
                     }
 
                 }
@@ -444,7 +453,7 @@ int main(){
             start = false;
             break;
         default:
-            cout << "error in choice!!";
+            cout << "error in choice!!" << endl;
         }
     }
     return 0;
