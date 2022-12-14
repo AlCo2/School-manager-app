@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1670976401 source:e:\c++\schoolmanagement\main.cpp
+1671058551 source:e:\c++\schoolmanagement\main.cpp
 	<iostream>
 	<vector>
 	<iostream>
@@ -7,4 +7,5 @@
 	<sstream>
 	<map>
 	<string>
+	<cstdio>
 

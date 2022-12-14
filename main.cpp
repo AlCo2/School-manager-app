@@ -5,6 +5,7 @@
 #include <sstream>
 #include <map>
 #include <string>
+#include <cstdio>
 using namespace std;
 //subjects:
 #define Ar "arabic"
@@ -244,7 +245,7 @@ public:
         cin >> age;
         cout << "gender: ";
         cin >> gender;
-        filex << studentName << " "<<studentLastName<< " "<< to_string(age)<<" "<<gender << " "<< endl;
+        filex << studentName << " "<<studentLastName<< " "<< to_string(age)<<" "<<gender << " "<< "G" <<endl;
         filex.close();
         outfile.close();
         cout << "Registration successful!" << endl;
@@ -352,10 +353,10 @@ int main(){
                         case 1:
                             {
                                 ifstream file("student.txt");
-                                string fname, lname, age, gender;
-                                cout << "|   FirstName   |" << "|   LastName |" << "|    Age   |" << "|   Gender   ||" << endl;
-                                while(file >> fname >> lname >> age >> gender){
-                                    cout <<"|    " <<fname << "      ||   " <<lname << "    ||     "<< age<< "   ||    " << gender<< "       ||"<< endl;
+                                string fname, lname, age, gender, grp;
+                                cout << "|   FirstName   |" << "|   LastName |" << "|    Age   |" << "|   Gender   ||"  << "group  |"<< endl;
+                                while(file >> fname >> lname >> age >> gender >> grp){
+                                    cout <<"|    " <<fname << "      ||   " <<lname << "    ||     "<< age<< "   ||    " << gender<< "   ||"<<grp<<"       ||"<< endl;
                                 }
                                 getchar();
                             }
@@ -377,11 +378,12 @@ int main(){
                                         ofstream file;
                                         ofstream authfile;
                                         authfile.open("UserAuth.txt", ios::out | ios::app);
-                                        file.open("Student.txt");
+                                        file.open("Student.txt", ios::app);
                                         string studentName;
                                         string studentLastName;
                                         int age;
                                         char gender;
+                                        int group;
                                         cout << "Student name: ";
                                         cin >> studentName;
                                         cout << "last name: ";
@@ -390,18 +392,48 @@ int main(){
                                         cin >> age;
                                         cout << "gender: ";
                                         cin >> gender;
-                                        file << studentName << " "<<studentLastName<< " "<< to_string(age)<<" "<<gender << endl;
+                                        cout << "group: ";
+                                        cin >> group;
+                                        file << studentName << " "<<studentLastName<< " "<< to_string(age)<<" "<<gender << " "<< to_string(group) <<endl;
                                         authfile.close();
                                         file.close();
                                         cout << "the student "<< studentName << " added" << endl;
                                         getchar();
-
                                     }
                                     break;
                                 case 2:
                                     {
-                                        cout << "edit student" << endl;
-
+                                        ifstream Readfile;
+                                        ofstream file;
+                                        Readfile.open("Student.txt");
+                                        file.open("NewGrpStudent.txt");
+                                        int n = 1;
+                                        int id;
+                                        string newGroup;
+                                        string fname, lname, age, gender, group;
+                                        while(Readfile >> fname >> lname >> age >> gender >> group){
+                                            cout << n<<"-" <<fname<<" "<<lname<<" "<<age<<" "<<gender<<" "<<group << endl;
+                                            n++;
+                                        }
+                                        cout << "Student Id: ";
+                                        cin >> id;
+                                        cout << "Group: ";
+                                        cin >> newGroup;
+                                        n = 1;
+                                        Readfile.close();
+                                        Readfile.open("Student.txt");
+                                        while(Readfile >> fname >> lname >> age >> gender >> group){
+                                            if(n==id){
+                                                file << fname << " " <<lname <<" " <<age <<" " <<gender<< " " <<newGroup << endl;
+                                            }else{
+                                                file << fname << " " <<lname <<" " <<age <<" " <<gender<< " " <<group << endl;
+                                            }
+                                            n++;
+                                        }
+                                        file.close();
+                                        Readfile.close();
+                                        remove("Student.txt");
+                                        rename("NewGrpStudent.txt", "Student.txt");
                                     }
                                     break;
                                 }
@@ -431,29 +463,37 @@ int main(){
                         ifstream file("Student.txt");
                         string line;
                         string fname, lname, age;
+                        int grp;
                         char gender;
                         int n;
                         while(getline(file, line)){
                             stringstream ss(line);
-                            ss >> fname >>lname >> age >> gender;
+                            ss >> fname >>lname >> age >> gender >> grp;
                             if(user.getName()==fname)
                                 break;
                         }
                         n = stoi(age);
-                        Student student = Student(fname,lname, n,gender ,1);
+                        Student student = Student(fname,lname, n,gender ,grp);
                         int c;
                         cout << "welcome " << student.getFname() << endl;
-                        cout << "1- 1\n2- 2" << endl;
+                        cout << "1-Show Your Information \n2- 2" << endl;
                         cin >> c;
                         switch(c){
                         case 1:
                             {
-                                cout << "1" << endl;
+                                cout <<"firstName: "<< student.getFname() << endl;
+                                cout << "lastName: " << student.getLname() << endl;
+                                cout << "Age: " << student.getAge() << endl;
+                                cout << "Gender: " << student.getGender() << endl;
+                                cout << "Group: " << student.showGroup() << endl;
+                                getchar();
                             }
+                            break;
                         case 2:
                             {
                                 cout << "2" << endl;
                             }
+                            break;
                         }
                     }
 
