@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <map>
-
+#include <string>
 using namespace std;
 //subjects:
 #define Ar "arabic"
@@ -206,6 +206,9 @@ public:
     bool getAccess(){
         return Access;
     }
+    string getName(){
+        return name;
+    }
     void registerUser(){
         ifstream file;
         ofstream outfile;
@@ -225,10 +228,10 @@ public:
         file.close();
 
         outfile.open("UserAuth.txt", ios::out | ios::app);
-        outfile << name << " "<< password << endl;
+        outfile << name << " "<< password << " "<< "Student" << endl;
         ofstream filex;
 
-        filex.open("Student.txt");
+        filex.open("Student.txt", ios::app);
         string studentName;
         string studentLastName;
         int age;
@@ -251,23 +254,22 @@ public:
         file.open("UserAuth.txt");
         string line;
         string fname;
+        string fowner;
         string fpassword;
         while(getline(file, line)){
             stringstream ss(line);
-            ss >> fname >>fpassword;
-            if(name != fname){
-                cout << "this name is not regestered!" << endl;
-            }else{
-                if(password != fpassword){
-                    cout << "error in password or name, please try again!" << endl;
-                }else{
-                cout << "login successful!" << endl;
-                Access = true;
-                return;
+            ss >> fname >>fpassword >> fowner ;
+            if(name == fname){
+                if(password==fpassword){
+                   cout << "login successful!" << endl;
+                    setWork(fowner);
+                    Access = true;
+                    return;
                 }
             }
         }
-        cout << "error in password or name, please try again!" << endl;
+        cout << "error in password or username!" << endl;
+        Access = false;
         file.close();
     }
     void setWork(string work){
@@ -335,9 +337,8 @@ int main(){
                     work = 3;
                     }
                 else{
-                    cout << "please wait for the owner to give you a role /2"<< endl;
+                    cout << "error";
                     getchar();
-                    break;
                 }
                 switch(work){
                 case 1:
@@ -350,8 +351,13 @@ int main(){
                         switch(Ownerchoix){
                         case 1:
                             {
-                                cout << "student list: " << endl;
-
+                                ifstream file("student.txt");
+                                string fname, lname, age, gender;
+                                cout << "|   FirstName   |" << "|   LastName |" << "|    Age   |" << "|   Gender   ||" << endl;
+                                while(file >> fname >> lname >> age >> gender){
+                                    cout <<"|    " <<fname << "      ||   " <<lname << "    ||     "<< age<< "   ||    " << gender<< "       ||"<< endl;
+                                }
+                                getchar();
                             }
                             break;
                         case 2:
@@ -376,7 +382,6 @@ int main(){
                                         string studentLastName;
                                         int age;
                                         char gender;
-                                        int group;
                                         cout << "Student name: ";
                                         cin >> studentName;
                                         cout << "last name: ";
@@ -385,13 +390,11 @@ int main(){
                                         cin >> age;
                                         cout << "gender: ";
                                         cin >> gender;
-                                        cout << "group: ";
-                                        cin >> group;
-                                        file << studentName << " "<<studentLastName<< " "<< to_string(age)<<" "<<gender << " "<< to_string(group) << endl;
-                                        authfile << studentLastName << " " << studentLastName << "@gmail.com" << " " << "123456" << " " << "Student" << endl;
+                                        file << studentName << " "<<studentLastName<< " "<< to_string(age)<<" "<<gender << endl;
                                         authfile.close();
                                         file.close();
-                                        cout << "the student "<< studentName << " added to group: "<< group;
+                                        cout << "the student "<< studentName << " added" << endl;
+                                        getchar();
 
                                     }
                                     break;
@@ -419,12 +422,39 @@ int main(){
                     }
                 case 2:
                     {
+                        cout << "hello world";
+                        getchar();
                     }
                     break;
                 case 3:
                     {
-                        Student student = Student(name, "test", 20, 'M', 2);
+                        ifstream file("Student.txt");
+                        string line;
+                        string fname, lname, age;
+                        char gender;
+                        int n;
+                        while(getline(file, line)){
+                            stringstream ss(line);
+                            ss >> fname >>lname >> age >> gender;
+                            if(user.getName()==fname)
+                                break;
+                        }
+                        n = stoi(age);
+                        Student student = Student(fname,lname, n,gender ,1);
+                        int c;
                         cout << "welcome " << student.getFname() << endl;
+                        cout << "1- 1\n2- 2" << endl;
+                        cin >> c;
+                        switch(c){
+                        case 1:
+                            {
+                                cout << "1" << endl;
+                            }
+                        case 2:
+                            {
+                                cout << "2" << endl;
+                            }
+                        }
                     }
 
                 }

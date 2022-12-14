@@ -1,9 +1,10 @@
 # depslib dependency file v1.0
-1670955763 source:e:\c++\schoolmanagement\main.cpp
+1670976401 source:e:\c++\schoolmanagement\main.cpp
 	<iostream>
 	<vector>
 	<iostream>
 	<fstream>
 	<sstream>
 	<map>
+	<string>
 
