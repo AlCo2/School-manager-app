@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <cstdio>
+#include <iomanip>
 using namespace std;
 //subjects:
 #define Ar "arabic"
@@ -129,6 +130,17 @@ public:
     void intro(){
         cout << "i am "<<firstName<< " "<< lastName<< " my age is "<< age << " and i am in group: "<< Group << endl;
     }
+    void showClass(){
+        ifstream file;
+        file.open("Student.txt");
+        string fname, lname, fage, fgender, fgrp ;
+        int n=1;
+        while(file >> fname>> lname>>fage>>fgender>>fgrp){
+            cout << n<<"-"<< fname << " "<< lname<< " "<<fage<< " "<<fgender<< " "<<fgrp<<endl;
+            n++;
+        }
+        getchar();
+    }
 };
 
 
@@ -249,6 +261,7 @@ public:
         filex.close();
         outfile.close();
         cout << "Registration successful!" << endl;
+        getchar();
     }
     void loginUser(){
         ifstream file;
@@ -309,11 +322,13 @@ int main(){
     string password;
     string password2;
     while(start){
+        system("cls");
         cout << "1-login\n2-register\n3-stop App" << endl;
         cin >> choix;
         switch(choix){
         case 1:
             {
+            system("cls");
             cout << "name: ";
             cin >> name;
             cout << "password: ";
@@ -344,6 +359,7 @@ int main(){
                 switch(work){
                 case 1:
                     {
+                        system("cls");
                         Owner owner = Owner(name, name, 20, 'M');
                         int Ownerchoix;
                         cout << "Welcome " << owner.getFname() << endl;
@@ -352,11 +368,12 @@ int main(){
                         switch(Ownerchoix){
                         case 1:
                             {
+                                system("cls");
                                 ifstream file("student.txt");
                                 string fname, lname, age, gender, grp;
-                                cout << "|   FirstName   |" << "|   LastName |" << "|    Age   |" << "|   Gender   ||"  << "group  |"<< endl;
+                                cout << "|   FirstName   |" << "|   LastName |" << "|    Age   |" << "|  Gender ||"  << " group ||"<< endl;
                                 while(file >> fname >> lname >> age >> gender >> grp){
-                                    cout <<"|    " <<fname << "      ||   " <<lname << "    ||     "<< age<< "   ||    " << gender<< "   ||"<<grp<<"       ||"<< endl;
+                                    cout <<"| " <<setw(10) <<fname << "    ||" <<setw(10)<<lname << "  ||    "<<setw(4)<< age<< "  || " <<setw(6)<< gender<< "  ||"<<setw(5)<<grp<<"  ||"<< endl;
                                 }
                                 getchar();
                             }
@@ -375,6 +392,7 @@ int main(){
                                 switch(c){
                                 case 1:
                                     {
+                                        system("cls");
                                         ofstream file;
                                         ofstream authfile;
                                         authfile.open("UserAuth.txt", ios::out | ios::app);
@@ -403,6 +421,7 @@ int main(){
                                     break;
                                 case 2:
                                     {
+                                        system("cls");
                                         ifstream Readfile;
                                         ofstream file;
                                         Readfile.open("Student.txt");
@@ -476,8 +495,9 @@ int main(){
                         Student student = Student(fname,lname, n,gender ,grp);
                         int c;
                         cout << "welcome " << student.getFname() << endl;
-                        cout << "1-Show Your Information \n2- 2" << endl;
+                        cout << "1-Show Your Information \n2-Show Your Class\n3-Logout" << endl;
                         cin >> c;
+                        system("cls");
                         switch(c){
                         case 1:
                             {
@@ -491,8 +511,13 @@ int main(){
                             break;
                         case 2:
                             {
-                                cout << "2" << endl;
+                                system("cls");
+                                cout << "2-Your Class: " << endl;
+                                student.showClass();
                             }
+                            break;
+                        case 3:
+                            user.setAccess(false);
                             break;
                         }
                     }
@@ -503,6 +528,7 @@ int main(){
             break;
         case 2:
             {
+            system("cls");
             cout << "name: ";
             cin >> name;
             cout << "gmail: ";
